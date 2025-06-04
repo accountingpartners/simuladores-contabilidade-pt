@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Pagamentos por Conta - Portugal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .calculate-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .results {
+            background: linear-gradient(135deg, #f6f9fc 0%, #e9ecef 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 20px;
+            border-left: 5px solid #667eea;
+            display: none;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .result-label {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .result-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .percentage-info {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .payment-schedule {
+            margin-top: 10px;
+        }
+
+        .payment-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .payment-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .payment-date {
+            font-weight: 600;
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .payment-value {
+            font-weight: 700;
+            color: #667eea;
+            font-size: 1.1rem;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .currency-symbol {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-weight: 600;
+        }
+
+        .currency-input {
+            padding-left: 35px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .info-box {
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-title {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .info-text {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pagamentos por Conta</h1>
+        <div class="subtitle">Calculadora para IRC - Portugal</div>
+        
+        <div class="info-box">
+            <div class="info-title">Como funciona:</div>
+            <div class="info-text">
+                • Volume < €500.000 → aplicação de 80%<br>
+                • Volume ≥ €500.000 → aplicação de 95%<br>
+                • Resultado dividido em 3 pagamentos trimestrais
+            </div>
+        </div>
+        
+        <form id="calculatorForm">
+            <div class="form-group">
+                <label for="volumeNegocios">Volume de Negócios (€)</label>
+                <div class="input-group">
+                    <span class="currency-symbol">€</span>
+                    <input type="number" id="volumeNegocios" class="currency-input" 
+                           placeholder="Ex: 750000" step="0.01" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="coletaAnterior">Coleta do Ano Anterior (€)</label>
+                <div class="input-group">
+                    <span class="currency-symbol">€</span>
+                    <input type="number" id="coletaAnterior" class="currency-input" 
+                           placeholder="Ex: 50000" step="0.01" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="retencoesNaFonte">Retenções na Fonte (€)</label>
+                <div class="input-group">
+                    <span class="currency-symbol">€</span>
+                    <input type="number" id="retencoesNaFonte" class="currency-input" 
+                           placeholder="Ex: 5000" step="0.01" value="0">
+                </div>
+            </div>
+
+            <button type="submit" class="calculate-btn">Calcular Pagamentos</button>
+        </form>
+
+        <div id="results" class="results">
+            <div class="result-item">
+                <div class="result-label">Percentagem Aplicada:</div>
+                <div id="percentagem" class="result-value"></div>
+                <div id="percentagemInfo" class="percentage-info"></div>
+            </div>
+            
+            <div class="result-item">
+                <div class="result-label">Total de Pagamentos por Conta:</div>
+                <div id="totalPagamentos" class="result-value"></div>
+            </div>
+            
+            <div class="result-item">
+                <div class="result-label">Pagamentos Trimestrais:</div>
+                <div class="payment-schedule">
+                    <div class="payment-item">
+                        <span class="payment-date">1.º pagamento (até 20 de julho):</span>
+                        <span id="pagamento1" class="payment-value"></span>
+                    </div>
+                    <div class="payment-item">
+                        <span class="payment-date">2.º pagamento (até 20 de setembro):</span>
+                        <span id="pagamento2" class="payment-value"></span>
+                    </div>
+                    <div class="payment-item">
+                        <span class="payment-date">3.º pagamento (até 20 de dezembro):</span>
+                        <span id="pagamento3" class="payment-value"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Ferramenta gratuita para cálculo de pagamentos por conta do IRC<br>
+            <strong>Desenvolvido por Frederico Agostinho</strong>
+        </div>
+    </div>
+
+    <script>
+        function calcular() {
+            const volumeNegocios = parseFloat(document.getElementById('volumeNegocios').value);
+            const coletaAnterior = parseFloat(document.getElementById('coletaAnterior').value);
+            const retencoesNaFonte = parseFloat(document.getElementById('retencoesNaFonte').value) || 0;
+            
+            if (isNaN(volumeNegocios) || isNaN(coletaAnterior) || volumeNegocios <= 0 || coletaAnterior <= 0) {
+                alert('Por favor, insira valores válidos e positivos nos campos obrigatórios.');
+                return;
+            }
+            
+            let percentagem;
+            let percentagemInfo;
+            
+            if (volumeNegocios < 500000) {
+                percentagem = 80;
+                percentagemInfo = 'Volume de negócios inferior a €500.000 - Aplica-se 80%';
+            } else {
+                percentagem = 95;
+                percentagemInfo = 'Volume de negócios superior ou igual a €500.000 - Aplica-se 95%';
+            }
+            
+            // Novo cálculo: (Coleta - Retenções na Fonte) * percentagem
+            const baseCalculo = coletaAnterior - retencoesNaFonte;
+            const totalPagamentos = Math.max(0, baseCalculo * (percentagem / 100));
+            const valorCadaPagamento = totalPagamentos / 3;
+            
+            // Atualizar os resultados
+            document.getElementById('percentagem').textContent = percentagem + '%';
+            document.getElementById('percentagemInfo').textContent = percentagemInfo;
+            document.getElementById('totalPagamentos').textContent = formatCurrency(totalPagamentos);
+            
+            // Atualizar os três pagamentos
+            document.getElementById('pagamento1').textContent = formatCurrency(valorCadaPagamento);
+            document.getElementById('pagamento2').textContent = formatCurrency(valorCadaPagamento);
+            document.getElementById('pagamento3').textContent = formatCurrency(valorCadaPagamento);
+            
+            // Mostrar os resultados
+            document.getElementById('results').style.display = 'block';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('calculatorForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                calcular();
+            });
+            
+            document.querySelector('.calculate-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                calcular();
+            });
+        });
+        
+        function formatCurrency(value) {
+            return value.toLocaleString('pt-PT', {
+                style: 'currency',
+                currency: 'EUR',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+    </script>
+</body>
+</html>
